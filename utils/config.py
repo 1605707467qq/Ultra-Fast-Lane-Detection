@@ -15,10 +15,9 @@ DELETE_KEY = '_delete_'
 
 
 class ConfigDict(Dict):
-
+    # getattr() 函数用于返回一个对象属性值    # 语法getattr(object, name[, default])     # 参数object -- 对象。 name -- 字符串，对象属性。     # default -- 默认返回值，如果不提供该参数，在没有对应属性时，将触发
     def __missing__(self, name):
         raise KeyError(name)
-
     def __getattr__(self, name):
         try:
             value = super(ConfigDict, self).__getattr__(name)
@@ -50,12 +49,12 @@ def add_args(parser, cfg, prefix=''):
             print(f'cannot parse key {prefix + k} of type {type(v)}')
     return parser
 
-
+'''该接口与dict对象相同'''
 class Config(object):
-    """A facility for config and config files.
-    It supports common file formats as configs: python/json/yaml. The interface
-    is the same as a dict object and also allows access config values as
-    attributes.
+    """
+    一个用于配置和配置文件的工具。 
+    它支持常见的文件格式作为配置：Python/json/yaml。
+    该接口与dict对象相同，也允许将配置值作为属性访问。   
     Example:
         >>> cfg = Config(dict(a=1, b=dict(b1=[0, 1])))
         >>> cfg.a
@@ -76,7 +75,7 @@ class Config(object):
 
     @staticmethod
     def _file2dict(filename):
-        filename = osp.abspath(osp.expanduser(filename))
+        filename = osp.abspath(osp.expanduser(filename)) #相对路径向绝对路径的转换
         if filename.endswith('.py'):
             with tempfile.TemporaryDirectory() as temp_config_dir:
                 temp_config_file = tempfile.NamedTemporaryFile(
@@ -95,7 +94,7 @@ class Config(object):
                     for name, value in mod.__dict__.items()
                     if not name.startswith('__')
                 }
-                # delete imported module
+                # delete imported module {'dataset': 'Tusimple', 'data_root': '/home/mengxc/dataset/Tusimple', 'epoch': 100, 'batch_size': 2, 'optimizer': 'Adam', 'learning_rate': 0.0004, 'weight_decay': 0.0001, 'momentum': 0.9, 'scheduler': 'cos', 'gamma': 0.1, 'warmup': 'linear', 'warmup_iters': 100, 'backbone': '18', 'griding_num': 100, ...}
                 del sys.modules[temp_module_name]
 
         elif filename.endswith(('.yml', '.yaml', '.json')):
@@ -103,9 +102,9 @@ class Config(object):
             cfg_dict = mmcv.load(filename)
         else:
             raise IOError('Only py/yml/yaml/json type are supported now!')
-
+        '''读取参数模型'''
         cfg_text = filename + '\n'
-        with open(filename, 'r') as f:
+        with open(filename, 'r', encoding='UTF-8') as f:
             cfg_text += f.read()
 
         if BASE_KEY in cfg_dict:
@@ -162,7 +161,7 @@ class Config(object):
 
     @staticmethod
     def auto_argparser(description=None):
-        """Generate argparser from config file automatically (experimental)
+        """从配置文件中自动生成argparser（实验性）。
         """
         partial_parser = ArgumentParser(description=description)
         partial_parser.add_argument('config', help='config file path')

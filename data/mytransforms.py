@@ -95,13 +95,13 @@ class DeNormalize(object):
 class MaskToTensor(object):
     def __call__(self, img):
         return torch.from_numpy(np.array(img, dtype=np.int32)).long()
-
-
+'''row_sample:array([160., 170., 180., 190., 200., 210., 220., 229., 240., 250., 260.,       270., 280., 290., 300., 310., 320., 330., 340., 350., 360., 369.,       380., 390., 400., 410., 420., 430., 440., 450., 459., 470., 480.,       490., 500., 510., 520., 530., 540., 550., 560., 570., 580., 590.,       600., 610., 620., 630., 640., 650., 660., 670., 680., 690., 700.,
+       710.])   start = 630'''
 def find_start_pos(row_sample,start_line):
     # row_sample = row_sample.sort()
     # for i,r in enumerate(row_sample):
     #     if r >= start_line:
-    #         return i
+    #         return i 还是个二分查找呢，查找的是什么啊
     l,r = 0,len(row_sample)-1
     while True:
         mid = int((l+r)/2)

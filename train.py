@@ -10,10 +10,9 @@ from utils.metrics import MultiLabelAcc, AccTopk, Metric_mIoU, update_metrics, r
 
 from utils.common import merge_config, save_model, cp_projects
 from utils.common import get_work_dir, get_logger
+# python train.py configs/tusimple.py
 
 import time
-
-
 def inference(net, data_label, use_aux):
     if use_aux:
         img, cls_label, seg_label = data_label
@@ -93,12 +92,13 @@ def train(net, data_loader, loss_dict, optimizer, scheduler,logger, epoch, metri
 
 
 if __name__ == "__main__":
+    '''此标志允许您启用内置的 cudnn 自动调谐器以找到用z`于您的硬件的最佳算法。'''
     torch.backends.cudnn.benchmark = True
-
+    '''拿到我们的配置参数'''
     args, cfg = merge_config()
-
+    '''项目所在路径'''
     work_dir = get_work_dir(cfg)
-
+    '''分布式训练-始 先不用管后期再管'''
     distributed = False
     if 'WORLD_SIZE' in os.environ:
         distributed = int(os.environ['WORLD_SIZE']) > 1
@@ -106,19 +106,20 @@ if __name__ == "__main__":
     if distributed:
         torch.cuda.set_device(args.local_rank)
         torch.distributed.init_process_group(backend='nccl', init_method='env://')
-    dist_print(datetime.datetime.now().strftime('[%Y/%m/%d %H:%M:%S]') + ' start training...')
-    dist_print(cfg)
+    '''分布式-末   '''
+    dist_print(datetime.datetime.now().strftime('[%Y/%m/%d %H:%M:%S]') + ' start training...')# 打印什么时候开始训练
+    dist_print(cfg)# 打印参数
     assert cfg.backbone in ['18','34','50','101','152','50next','101next','50wide','101wide']
-
-
+    '''这里的主干网络限制在了Resnet18中'''
+    '''训练所用的超参数的配置'''
     train_loader, cls_num_per_lane = get_train_loader(cfg.batch_size, cfg.data_root, cfg.griding_num, cfg.dataset, cfg.use_aux, distributed, cfg.num_lanes)
-
+    '''网络及其行级分类器超参数的的配置'''
     net = parsingNet(pretrained = True, backbone=cfg.backbone,cls_dim = (cfg.griding_num+1,cls_num_per_lane, cfg.num_lanes),use_aux=cfg.use_aux).cuda()
 
     if distributed:
         net = torch.nn.parallel.DistributedDataParallel(net, device_ids = [args.local_rank])
     optimizer = get_optimizer(net, cfg)
-
+    # 是否使用微调
     if cfg.finetune is not None:
         dist_print('finetune from ', cfg.finetune)
         state_all = torch.load(cfg.finetune)['model']
@@ -138,7 +139,7 @@ if __name__ == "__main__":
         resume_epoch = 0
 
 
-
+    '''训练策略，'''
     scheduler = get_scheduler(optimizer, cfg, len(train_loader))
     dist_print(len(train_loader))
     metric_dict = get_metric_dict(cfg)

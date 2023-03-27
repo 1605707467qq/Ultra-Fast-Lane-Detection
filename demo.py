@@ -8,6 +8,7 @@ import numpy as np
 import torchvision.transforms as transforms
 from data.dataset import LaneTestDataset
 from data.constant import culane_row_anchor, tusimple_row_anchor
+# python demo.py configs/tusimple.py --test_model tusimple_18.pth
 
 if __name__ == "__main__":
     torch.backends.cudnn.benchmark = True

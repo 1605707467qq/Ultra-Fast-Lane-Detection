@@ -7,7 +7,7 @@ from model.model import parsingNet
 
 torch.backends.cudnn.benchmark = True
 net = parsingNet(pretrained = False, backbone='18',cls_dim = (100+1,56,4),use_aux=False).cuda()
-# net = parsingNet(pretrained = False, backbone='18',cls_dim = (200+1,18,4),use_aux=False).cuda()
+#net = parsingNet(pretrained = False, backbone='b0',cls_dim = (200+1,18,4),use_aux=False).cuda()
 
 net.eval()
 
@@ -16,12 +16,12 @@ for i in range(10):
     y = net(x)
 
 t_all = []
-for i in range(100):
+for i in range(200):
     t1 = time.time()
     y = net(x)
     t2 = time.time()
     t_all.append(t2 - t1)
-
+t_all=[i for i in t_all if i != 0.0]
 print('average time:', np.mean(t_all) / 1)
 print('average fps:',1 / np.mean(t_all))
 

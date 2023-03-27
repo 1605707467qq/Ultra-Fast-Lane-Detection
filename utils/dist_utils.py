@@ -17,7 +17,7 @@ def to_python_float(t):
     else:
         return t[0]
 
-
+'''获取distributed 也就是分布式的信息'''
 def get_rank():
     if not dist.is_available():
         return 0
@@ -25,15 +25,14 @@ def get_rank():
         return 0
     return dist.get_rank()
 
-
+'''判断是否是主进程'''
 def is_main_process():
     return get_rank() == 0
-
-
+'''判断是否时主进程要输出日志'''
 def can_log():
     return is_main_process()
 
-
+'''打印字典及其值'''
 def dist_print(*args, **kwargs):
     if can_log():
         print(*args, **kwargs)

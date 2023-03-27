@@ -41,9 +41,10 @@ def get_loss_dict(cfg):
             'weight': [1.0, cfg.sim_loss_w, cfg.shp_loss_w],
             'data_src': [('cls_out', 'cls_label'), ('cls_out',), ('cls_out',)]
         }
-
+    '''设置超参数，损失函数的dict，也就是都有什么，每个损失函数：名称：所选操作：权重：'''
     return loss_dict
-
+    ''''data_src': [('cls_out', 'cls_label'), ('cls_out',), ('cls_out',)]是一个字典条目，它指定了用于计算损失函数的数据源。这个条目中的值是一个元组列表，其中每个元组表示一个损失函数所需的输入。
+        例如，在这种情况下，第一个元组('cls_out', 'cls_label')表示第一个损失函数需要两个输入：'cls_out'和'cls_label'。第二个和第三个元组都只包含一个元素：'cls_out'，这意味着第二个和第三个损失函数都只需要一个输入：'cls_out'。'''
 def get_metric_dict(cfg):
 
     if cfg.use_aux:

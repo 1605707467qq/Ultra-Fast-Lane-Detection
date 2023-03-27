@@ -47,11 +47,11 @@ def get_args():
     parser.add_argument('--auto_backup', action='store_true', help='automatically backup current code in the log path')
 
     return parser
-
+'''configs/Tusimple.py 放入到args 中的数据进行输出'''
 def merge_config():
     args = get_args().parse_args()
     cfg = Config.fromfile(args.config)
-
+    '''上面的那行代码使用将 utils.config import Config 中的configs将configs/Tusimple.py 中的数据对生成字典，下面的是超参数名称的列表'''
     items = ['dataset','data_root','epoch','batch_size','optimizer','learning_rate',
     'weight_decay','momentum','scheduler','steps','gamma','warmup','warmup_iters',
     'use_aux','griding_num','backbone','sim_loss_w','shp_loss_w','note','log_path',
