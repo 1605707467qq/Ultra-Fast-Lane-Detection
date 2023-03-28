@@ -73,6 +73,7 @@ class parsingNet(torch.nn.Module):
     def forward(self, x):
         # n c h w - > n 2048 sh sw
         # -> n 2048
+        # 这三个部分适用于做分割的
         x2,x3,fea = self.model(x)
         if self.use_aux:
             x2 = self.aux_header2(x2)
@@ -84,11 +85,11 @@ class parsingNet(torch.nn.Module):
             aux_seg = self.aux_combine(aux_seg)
         else:
             aux_seg = None
-
+        # 对得到的特征图做池化的操作，池化操作之后变为1800个向量 torch.Size([2, 512, 9, 25])--》torch.Size([2, 1800])
         fea = self.pool(fea).view(-1, 1800)
 
         group_cls = self.cls(fea).view(-1, *self.cls_dim)
-
+        #torch.Size([batch_size, 101, 56, 4])       (101, 56, 4)
         if self.use_aux:
             return group_cls, aux_seg
 

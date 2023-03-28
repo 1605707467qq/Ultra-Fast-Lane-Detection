@@ -32,10 +32,10 @@ def resolve_val_data(results, use_aux):
         results['seg_out'] = torch.argmax(results['seg_out'], dim=1)
     return results
 
-
+# loss 函数定义在了 Train.py上
 def calc_loss(loss_dict, results, logger, global_step):
     loss = 0
-
+    # loss_dict: ['cls_loss', 'relation_loss', 'relation_dis']
     for i in range(len(loss_dict['name'])):
 
         data_src = loss_dict['data_src'][i]
