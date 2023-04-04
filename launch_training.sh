@@ -5,3 +5,4 @@ export OMP_NUM_THREADS=1 # you can change this value according to your number of
 
 python -m torch.distributed.launch --nproc_per_node=$NGPUS train.py configs/culane.py
 # python train.py configs/tusimple.py
+# 分布式训练
