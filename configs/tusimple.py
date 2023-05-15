@@ -1,6 +1,6 @@
 # 数据集 名称 位置
 dataset='Tusimple'
-data_root = 'D:/Programme/dataset/Tusimple/Tusimple'
+data_root = 'D:/Programme/dataset/Tusimple'
 
 # 训练参数
 epoch = 100 

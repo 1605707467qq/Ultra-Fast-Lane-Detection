@@ -135,7 +135,7 @@ def generate_segmentation_and_train_list(root, line_txt, names):
 
 def get_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--root', required=True, help='The root of the Tusimple dataset')
+    parser.add_argument('--root', default='D:\Programme\dataset\Tusimple', help='The root of the Tusimple dataset')
     return parser
 
 if __name__ == "__main__":

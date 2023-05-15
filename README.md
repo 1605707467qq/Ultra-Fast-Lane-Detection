@@ -16,9 +16,7 @@ Caffe model and prototxt can be found [here](https://github.com/Jade999/caffe_la
 
 # Demo
 
-`<a href="http://www.youtube.com/watch?feature=player_embedded&v=lnFbAG3GBN4
-" target="_blank"><img src="http://img.youtube.com/vi/lnFbAG3GBN4/0.jpg" 
-alt="Demo" width="240" height="180" border="10" />``</a>`
+`<a href="http://www.youtube.com/watch?feature=player_embedded&v=lnFbAG3GBN4 " target="_blank"><img src="http://img.youtube.com/vi/lnFbAG3GBN4/0.jpg"  alt="Demo" width="240" height="180" border="10" />``</a>`
 
 # Install
 
@@ -147,7 +145,29 @@ year = {2020}
 
 Thanks zchrissirhcz for the contribution to the compile tool of CULane, KopiSoftware for contributing to the speed test, and ustclbh for testing on the Windows platform.
 
-
 |              日期              | 学习/提升                                              | 计划 | 反思 |
 | :-----------------------------: | :----------------------------------------------------- | :--: | :--: |
 | 2023-01-31 星期二 晴 ☀️️️️ | 前端vue3项目中引入threejs测试三维模型展示，thingjs了解 |  -  |  -  |
+
+通过Dataset 所调出的数据为经过变换的图像以及标签数据
+
+图像torch.Size([3, 288, 800])：
+
+![1684135633954](image/README/1684135633954.png)
+
+标签(56, 4)：(101, 56, 4)
+
+![1684135578576](image/README/1684135578576.png)
+
+其实像我们这样的双非的学生，网上能有一个这么好的开源代码是一件很幸运的事情
+
+也就是说我们无需再去担心输入与输出的问题，除非，你要再去弄个数据增强，或者车道线的表现形式啊，也就是模型的输出要和标注文件对应起来的形式。
+
+我们就是知道模型按照批次为2来说 
+
+* 模型的输入为：torch.Size([2, 3, 288, 800])
+* 模型的为：torch.Size([2, 101, 56, 4])
+
+那么问题来了，做模改模型需要我们做的东西真的很多吗？答案是no
+
+那么要怎么去模改这篇论文呢

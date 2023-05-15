@@ -60,7 +60,7 @@ class LaneClsDataset(torch.utils.data.Dataset):
     def __getitem__(self, index):
         l = self.list[index]#index=269
         l_info = l.split()# 'list的第269行是clips/0601/1494452553518276564/20.jpg clips/0601/1494452553518276564/20.png 1 1 1 1\n'
-        img_name, label_name = l_info[0], l_info[1]# 划分一下得到数据和标注图片的绝对路径
+        img_name, label_name = l_info[0], l_info[1]# 划分一下得到数据和标注图片的相对路径
         if img_name[0] == '/':
             img_name = img_name[1:]
             label_name = label_name[1:]
